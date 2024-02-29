@@ -100,42 +100,53 @@
                 android:textColor="?attr/boldText"
                 android:textSize="@dimen/_15sdp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/movieList"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp" />
+                android:layout_marginLeft="@dimen/_10sdp">
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/loadingNowPlaying"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="true" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movieList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_10sdp" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loadingNowPlaying"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/product_sans_bold"
                 android:text="Upcoming"
                 android:textColor="?attr/boldText"
                 android:textSize="@dimen/_15sdp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcyUpcoming"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp" />
+                android:layout_marginLeft="@dimen/_10sdp">
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/loadingUpcoming"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="true" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcyUpcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_10sdp" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loadingUpcoming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true" />
+            </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

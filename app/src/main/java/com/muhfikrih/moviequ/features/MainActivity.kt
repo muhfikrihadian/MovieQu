@@ -11,13 +11,12 @@ import com.muhfikrih.moviequ.adapters.MovieListAdapter
 import com.muhfikrih.moviequ.api.RequestState
 import com.muhfikrih.moviequ.databinding.ActivityMainBinding
 import com.muhfikrih.moviequ.listeners.OnClickListener
-import com.muhfikrih.moviequ.models.DataMovie
+import com.muhfikrih.moviequ.models.movie.DataMovie
 import com.muhfikrih.moviequ.viewmodels.MovieViewModel
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var listMoviesId: ArrayList<String>;
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private var nowplayingAdapter: MovieListAdapter? = null
@@ -46,9 +45,9 @@ class MainActivity : AppCompatActivity() {
     private fun setup() {
         getBanners()
         getGenres()
-        viewModel.getPopularMovie()
+        viewModel.getPlayingMovie()
         viewModel.getUpcomingMovie()
-        getPopularMovies()
+        getPlayingMovie()
         getUpcomingMovies()
         nowplayingAdapter = MovieListAdapter()
         upcomingAdapter = MovieListAdapter()
@@ -122,8 +121,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getPopularMovies() {
-        viewModel.popularResponse.observe(this) {
+    private fun getPlayingMovie() {
+        viewModel.dataPlayingMovie.observe(this) {
             if (it != null) {
                 when (it) {
                     is RequestState.Loading -> {
@@ -144,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUpcomingMovies() {
-        viewModel.upcomingResponse.observe(this) {
+        viewModel.dataMovieUpcoming.observe(this) {
             if (it != null) {
                 when (it) {
                     is RequestState.Loading -> {
@@ -154,12 +153,6 @@ class MainActivity : AppCompatActivity() {
                     is RequestState.Success -> {
                         binding.loadingUpcoming.hide()
                         it.data?.results?.let { data -> upcomingAdapter?.differ?.submitList(data.toList()) }
-                        if (it.data?.results != null) {
-                            listMoviesId = ArrayList<String>()
-                            for (i in 0..(it.data.results.size - 1)) {
-                                listMoviesId.add(it.data.results.get(i).id.toString())
-                            }
-                        }
                     }
 
                     is RequestState.Error -> {
@@ -174,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollHorizontally(1)) {
-                viewModel.getPopularMovie()
+                viewModel.getPlayingMovie()
             }
         }
     }

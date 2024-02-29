@@ -1,4 +1,4 @@
-package com.muhfikrih.moviequ.models.responses
+package com.muhfikrih.moviequ.models.video
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

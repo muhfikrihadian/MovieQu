@@ -8,12 +8,11 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.muhfikrih.moviequ.R
 import com.muhfikrih.moviequ.adapters.SearchMovieAdapter
 import com.muhfikrih.moviequ.api.RequestState
 import com.muhfikrih.moviequ.databinding.ActivitySearchMovieBinding
 import com.muhfikrih.moviequ.listeners.OnClickListener
-import com.muhfikrih.moviequ.models.DataMovie
+import com.muhfikrih.moviequ.models.movie.DataMovie
 import com.muhfikrih.moviequ.viewmodels.MovieViewModel
 
 class SearchMovieActivity : AppCompatActivity() {
@@ -54,7 +53,7 @@ class SearchMovieActivity : AppCompatActivity() {
     }
 
     private fun observeAnychangeSearchMovie() {
-        viewModel.searchResponse.observe(this) {
+        viewModel.dataMovieSearch.observe(this) {
             if (it != null) {
                 when (it) {
                     is RequestState.Loading -> showLoading()

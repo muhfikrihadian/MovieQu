@@ -5,14 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.muhfikrih.moviequ.databinding.ItemVideoBinding
+import com.muhfikrih.moviequ.databinding.ItemReviewBinding
 import com.muhfikrih.moviequ.listeners.OnClickListener
-import com.muhfikrih.moviequ.models.video.ResultsItem
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.muhfikrih.moviequ.models.review.ResultsItem
 
-
-class VideoListAdapter() : RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
+class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     private lateinit var onClickListener: OnClickListener
     private val videoList = ArrayList<ResultsItem>()
 
@@ -30,10 +27,10 @@ class VideoListAdapter() : RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    inner class ViewHolder(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemReviewBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -41,13 +38,13 @@ class VideoListAdapter() : RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
         with(holder) {
             with(differ.currentList[position]) {
                 binding.apply {
-                    ytPlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            val videoId = key ?: ""
-                            youTubePlayer.loadVideo(videoId, 0f)
-                            youTubePlayer.pause()
-                        }
-                    })
+                    val words = author?.split(" ")
+                    val initials = words?.mapNotNull { it.firstOrNull() }
+                    val initName = initials?.joinToString(separator = "")
+                    tvName.text = author
+                    tvRating.text = authorDetails?.rating.toString()
+                    tvReview.text = content
+                    tvProfile.text = if(initName == null) "-" else initName?.toUpperCase()
                 }
             }
         }

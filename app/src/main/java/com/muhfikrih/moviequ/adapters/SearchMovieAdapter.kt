@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.muhfikrih.moviequ.listeners.OnClickListener
-import com.muhfikrih.moviequ.models.DataMovie
-import com.muhfikrih.moviequ.models.responses.GenresItem
+import com.muhfikrih.moviequ.models.movie.DataMovie
+import com.muhfikrih.moviequ.models.genre.GenresItem
 import com.bumptech.glide.Glide
 import com.muhfikrih.moviequ.BuildConfig
 import com.muhfikrih.moviequ.databinding.ItemMovieSearchBinding

@@ -1,4 +1,4 @@
-package com.muhfikrih.moviequ.models.responses
+package com.muhfikrih.moviequ.models.genre
 
 data class GenresItem(
 	val name: String? = null,

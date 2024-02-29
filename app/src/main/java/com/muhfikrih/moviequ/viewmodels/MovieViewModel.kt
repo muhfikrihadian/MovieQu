@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.muhfikrih.moviequ.api.RequestState
-import com.muhfikrih.moviequ.models.MovieResponse
-import com.muhfikrih.moviequ.models.responses.ResponseGenres
+import com.muhfikrih.moviequ.models.movie.MovieResponse
+import com.muhfikrih.moviequ.models.genre.ResponseGenres
 import com.ansorisan.movieku_kt.repositories.MovieRepository
-import com.muhfikrih.moviequ.models.responses.ResponseVideos
+import com.muhfikrih.moviequ.models.review.ResponseReview
+import com.muhfikrih.moviequ.models.video.ResponseVideos
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
@@ -21,38 +22,47 @@ class MovieViewModel : ViewModel() {
     private var upcomingPage = 1
     private var popularPage = 1
     private var searchPage = 1
-    private var upcomingMovieResponse: MovieResponse? = null
-    private var popularMovieResponse: MovieResponse? = null
-    private var searchMovieResponse: MovieResponse? = null
-    private var videosMovieResponse: ResponseVideos? = null
-    private var _upcomingResponse = MutableLiveData<RequestState<MovieResponse?>>()
-    private var _popularResponse = MutableLiveData<RequestState<MovieResponse?>>()
-    private var _searchResponse = MutableLiveData<RequestState<MovieResponse?>>()
-    private var _videosResponse = MutableLiveData<RequestState<ResponseVideos?>>()
-    var upcomingResponse: LiveData<RequestState<MovieResponse?>> = _upcomingResponse
-    var popularResponse: LiveData<RequestState<MovieResponse?>> = _popularResponse
-    var searchResponse: LiveData<RequestState<MovieResponse?>> = _searchResponse
-    var videosResponse: LiveData<RequestState<ResponseVideos?>> = _videosResponse
+    private var reviewPage = 1
 
-    fun getPopularMovie() {
+    private var modelMoviePlaying: MovieResponse? = null
+    private var mutableMoviePlaying = MutableLiveData<RequestState<MovieResponse?>>()
+    var dataPlayingMovie: LiveData<RequestState<MovieResponse?>> = mutableMoviePlaying
+
+    private var modelMovieUpcoming: MovieResponse? = null
+    private var mutableMovieUpcoming = MutableLiveData<RequestState<MovieResponse?>>()
+    var dataMovieUpcoming: LiveData<RequestState<MovieResponse?>> = mutableMovieUpcoming
+
+    private var modelMovieSearch: MovieResponse? = null
+    private var mutableMovieSearch = MutableLiveData<RequestState<MovieResponse?>>()
+    var dataMovieSearch: LiveData<RequestState<MovieResponse?>> = mutableMovieSearch
+
+    private var modelMovieVideo: ResponseVideos? = null
+    private var mutableMovieVideo = MutableLiveData<RequestState<ResponseVideos?>>()
+    var dataMovieVideo: LiveData<RequestState<ResponseVideos?>> = mutableMovieVideo
+
+    private var modelMovieReview: ResponseReview? = null
+    private var mutableMovieReview = MutableLiveData<RequestState<ResponseReview?>>()
+    var dataMovieReview: LiveData<RequestState<ResponseReview?>> = mutableMovieReview
+
+    fun getPlayingMovie() {
         viewModelScope.launch {
-            _popularResponse.postValue(RequestState.Loading)
-            val response = repo.getPopularMovie(popularPage)
-            _popularResponse.postValue(handlePopularMovieResponse(response))
+            mutableMoviePlaying.postValue(RequestState.Loading)
+            val response = repo.getPlayingMovie(popularPage)
+            mutableMoviePlaying.postValue(handlePlayingMovie(response))
         }
     }
 
-    private fun handlePopularMovieResponse(response: Response<MovieResponse>): RequestState<MovieResponse?> {
+    private fun handlePlayingMovie(response: Response<MovieResponse>): RequestState<MovieResponse?> {
         return if (response.isSuccessful) {
             response.body()?.let {
                 popularPage++
-                if (popularMovieResponse == null) popularMovieResponse = it else {
-                    val oldMovies = popularMovieResponse?.results
+                if (modelMoviePlaying == null) modelMoviePlaying = it else {
+                    val oldMovies = modelMoviePlaying?.results
                     val newMovies = it.results
                     oldMovies?.addAll(newMovies)
                 }
             }
-            RequestState.Success(popularMovieResponse ?: response.body())
+            RequestState.Success(modelMoviePlaying ?: response.body())
         } else RequestState.Error(
             try {
                 response.errorBody()?.string()?.let {
@@ -66,9 +76,9 @@ class MovieViewModel : ViewModel() {
 
     fun getUpcomingMovie() {
         viewModelScope.launch {
-            _upcomingResponse.postValue(RequestState.Loading)
-            val response = repo.getUpcomingMovie(popularPage)
-            _upcomingResponse.postValue(handleUpcomingMovieResponse(response))
+            mutableMovieUpcoming.postValue(RequestState.Loading)
+            val response = repo.getUpcomingMovie(upcomingPage)
+            mutableMovieUpcoming.postValue(handleUpcomingMovieResponse(response))
         }
     }
 
@@ -76,13 +86,13 @@ class MovieViewModel : ViewModel() {
         return if (response.isSuccessful) {
             response.body()?.let {
                 upcomingPage++
-                if (upcomingMovieResponse == null) upcomingMovieResponse = it else {
-                    val oldMovies = upcomingMovieResponse?.results
+                if (modelMovieUpcoming == null) modelMovieUpcoming = it else {
+                    val oldMovies = modelMovieUpcoming?.results
                     val newMovies = it.results
                     oldMovies?.addAll(newMovies)
                 }
             }
-            RequestState.Success(upcomingMovieResponse ?: response.body())
+            RequestState.Success(modelMovieUpcoming ?: response.body())
         } else RequestState.Error(
             try {
                 response.errorBody()?.string()?.let {
@@ -96,9 +106,9 @@ class MovieViewModel : ViewModel() {
 
     fun searchMovie(query: String){
         viewModelScope.launch {
-            _searchResponse.postValue(RequestState.Loading)
+            mutableMovieSearch.postValue(RequestState.Loading)
             val response = repo.searchMovie(query, searchPage)
-            _searchResponse.postValue(handleSearchMovieResponse(response))
+            mutableMovieSearch.postValue(handleSearchMovieResponse(response))
         }
     }
 
@@ -106,13 +116,13 @@ class MovieViewModel : ViewModel() {
         return if (response.isSuccessful) {
             response.body()?.let {
                 searchPage++
-                if (searchMovieResponse == null) searchMovieResponse = it else {
-                    val oldMovies = searchMovieResponse?.results
+                if (modelMovieSearch == null) modelMovieSearch = it else {
+                    val oldMovies = modelMovieSearch?.results
                     val newMovies = it.results
                     oldMovies?.addAll(newMovies)
                 }
             }
-            RequestState.Success(searchMovieResponse ?: response.body())
+            RequestState.Success(modelMovieSearch ?: response.body())
         } else RequestState.Error(
             try {
                 response.errorBody()?.string()?.let {
@@ -139,22 +149,52 @@ class MovieViewModel : ViewModel() {
 
     fun getVideos(id: Int) {
         viewModelScope.launch {
-            _videosResponse.postValue(RequestState.Loading)
+            mutableMovieVideo.postValue(RequestState.Loading)
             val response = repo.getVideos(id)
-            _videosResponse.postValue(handleResponseVideos(response))
+            mutableMovieVideo.postValue(handleResponseVideos(response))
         }
     }
 
     private fun handleResponseVideos(response: Response<ResponseVideos>): RequestState<ResponseVideos?> {
         return if (response.isSuccessful) {
             response.body()?.let {
-                if (videosMovieResponse == null) videosMovieResponse = it else {
-                    val oldVideos = videosMovieResponse?.results
+                if (modelMovieVideo == null) modelMovieVideo = it else {
+                    val oldVideos = modelMovieVideo?.results
                     val newVideos = it.results
                     oldVideos?.addAll(newVideos)
                 }
             }
-            RequestState.Success(videosMovieResponse ?: response.body())
+            RequestState.Success(modelMovieVideo ?: response.body())
+        } else RequestState.Error(
+            try {
+                response.errorBody()?.string()?.let {
+                    JSONObject(it).get("status_message")
+                }
+            }catch (e:JSONException){
+                e.localizedMessage
+            } as String
+        )
+    }
+
+    fun getReview(id: Int) {
+        viewModelScope.launch {
+            mutableMovieReview.postValue(RequestState.Loading)
+            val response = repo.getReview(id, reviewPage)
+            mutableMovieReview.postValue(handleResponseReviews(response))
+        }
+    }
+
+    private fun handleResponseReviews(response: Response<ResponseReview>): RequestState<ResponseReview?> {
+        return if (response.isSuccessful) {
+            response.body()?.let {
+                reviewPage++
+                if (modelMovieReview == null) modelMovieReview = it else {
+                    val oldReview = modelMovieReview?.results
+                    val newReview = it.results
+                    oldReview?.addAll(newReview)
+                }
+            }
+            RequestState.Success(modelMovieReview ?: response.body())
         } else RequestState.Error(
             try {
                 response.errorBody()?.string()?.let {

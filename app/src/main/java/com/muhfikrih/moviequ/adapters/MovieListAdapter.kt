@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 import com.muhfikrih.moviequ.listeners.OnClickListener
-import com.muhfikrih.moviequ.models.DataMovie
-import com.muhfikrih.moviequ.models.responses.GenresItem
+import com.muhfikrih.moviequ.models.movie.DataMovie
+import com.muhfikrih.moviequ.models.genre.GenresItem
 import com.bumptech.glide.Glide
 import com.muhfikrih.moviequ.BuildConfig
 import com.muhfikrih.moviequ.databinding.ItemMovieBinding
@@ -57,6 +57,7 @@ class MovieListAdapter() : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
                             genres.append("${map[data]}, ")
                         }
                     }
+//                    genre.text = genres.dropLast(2)
                     btnTicket.setOnClickListener {
                         onClickListener.onClicked(this@with, genres.toString())
                     }

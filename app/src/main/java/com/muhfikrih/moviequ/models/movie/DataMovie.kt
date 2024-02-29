@@ -1,4 +1,4 @@
-package com.muhfikrih.moviequ.models
+package com.muhfikrih.moviequ.models.movie
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
