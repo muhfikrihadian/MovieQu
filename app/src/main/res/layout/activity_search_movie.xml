@@ -63,6 +63,18 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
+    <TextView
+        android:id="@+id/tvInfoSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/product_sans_bold"
+        android:gravity="center"
+        android:text="Search Not Found !"
+        android:textColor="@color/black_bold_text"
+        android:textSize="@dimen/_12sdp"
+        android:visibility="gone" />
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading"
         android:layout_width="wrap_content"

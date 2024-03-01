@@ -96,6 +96,47 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/product_sans_bold"
+                android:text="Genres"
+                android:textColor="?attr/boldText"
+                android:textSize="@dimen/_15sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcyGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_10sdp" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loadingGenres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true" />
+
+                <TextView
+                    android:id="@+id/tvInfoGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:gravity="center"
+                    android:text="Genres information not found."
+                    android:textColor="@color/black_bold_text"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/product_sans_bold"
                 android:text="Now Playing"
                 android:textColor="?attr/boldText"
                 android:textSize="@dimen/_15sdp" />
@@ -114,9 +155,21 @@
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/loadingNowPlaying"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_100sdp"
                     android:layout_centerInParent="true"
                     android:indeterminate="true" />
+
+                <TextView
+                    android:id="@+id/tvInfoPlaying"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:gravity="center"
+                    android:text="Now playing movies information not found."
+                    android:textColor="@color/black_bold_text"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
@@ -143,9 +196,21 @@
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/loadingUpcoming"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_100sdp"
                     android:layout_centerInParent="true"
                     android:indeterminate="true" />
+
+                <TextView
+                    android:id="@+id/tvInfoUpcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:gravity="center"
+                    android:text="Upcoming movies information not found."
+                    android:textColor="@color/black_bold_text"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -4,4 +4,5 @@
     <string name="search_movie">Search Movie</string>
     <string name="poster">Poster</string>
     <string name="overview">Overview</string>
+    <string name="ErrServer">Oops... an error occurred, please ensure your internet connection!</string>
 </resources>

@@ -48,4 +48,12 @@ interface ApiService {
         @Query("api_key") key: String?,
         @Query("page") page: Int?
     ): Response<ResponseReview>
+
+    @GET("discover/movie")
+    suspend fun searchMovieByGenre(
+        @Query("api_key") key: String?,
+        @Query("region") region: String?,
+        @Query("with_genres") genreId: String?,
+        @Query("page") page: Int?
+    ): Response<MovieResponse>
 }

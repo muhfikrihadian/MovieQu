@@ -57,8 +57,9 @@ class MovieListAdapter() : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
                             genres.append("${map[data]}, ")
                         }
                     }
-//                    genre.text = genres.dropLast(2)
-                    btnTicket.setOnClickListener {
+                    tvTitle.text = originalTitle
+                    tvGenre.text = genres.dropLast(2)
+                    itemView.setOnClickListener {
                         onClickListener.onClicked(this@with, genres.toString())
                     }
                 }

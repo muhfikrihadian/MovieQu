@@ -57,7 +57,9 @@ class SearchMovieAdapter() : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>
                             genres.append("${map[data]}, ")
                         }
                     }
-                    btnTicket.setOnClickListener {
+                    tvTitle.text = originalTitle
+                    tvGenre.text = genres.dropLast(2)
+                    itemView.setOnClickListener {
                         onClickListener.onClicked(this@with, genres.toString())
                     }
                 }

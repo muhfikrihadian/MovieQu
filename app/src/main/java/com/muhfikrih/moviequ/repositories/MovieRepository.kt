@@ -12,4 +12,5 @@ class MovieRepository {
     suspend fun getUpcomingMovie(page: Int) = client.getUpcomingMovie(BuildConfig.API_KEY, page, DataHelper.Default_Region)
     suspend fun getVideos(id: Int) = client.getVideos(id, BuildConfig.API_KEY)
     suspend fun getReview(id: Int, page: Int) = client.getReview(id, BuildConfig.API_KEY, page)
+    suspend fun searchMovieByGenre(genreId: String, page: Int) = client.searchMovieByGenre(BuildConfig.API_KEY, DataHelper.Default_Region, genreId, page)
 }

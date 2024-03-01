@@ -23,6 +23,7 @@ class MovieViewModel : ViewModel() {
     private var popularPage = 1
     private var searchPage = 1
     private var reviewPage = 1
+    private var genrePage = 1
 
     private var modelMoviePlaying: MovieResponse? = null
     private var mutableMoviePlaying = MutableLiveData<RequestState<MovieResponse?>>()
@@ -43,6 +44,10 @@ class MovieViewModel : ViewModel() {
     private var modelMovieReview: ResponseReview? = null
     private var mutableMovieReview = MutableLiveData<RequestState<ResponseReview?>>()
     var dataMovieReview: LiveData<RequestState<ResponseReview?>> = mutableMovieReview
+
+    private var modelMovieGenre: MovieResponse? = null
+    private var mutableMovieGenre = MutableLiveData<RequestState<MovieResponse?>>()
+    var dataMovieGenre: LiveData<RequestState<MovieResponse?>> = mutableMovieGenre
 
     fun getPlayingMovie() {
         viewModelScope.launch {
@@ -195,6 +200,36 @@ class MovieViewModel : ViewModel() {
                 }
             }
             RequestState.Success(modelMovieReview ?: response.body())
+        } else RequestState.Error(
+            try {
+                response.errorBody()?.string()?.let {
+                    JSONObject(it).get("status_message")
+                }
+            }catch (e:JSONException){
+                e.localizedMessage
+            } as String
+        )
+    }
+
+    fun searchMovieByGenre(idGenre: String){
+        viewModelScope.launch {
+            mutableMovieGenre.postValue(RequestState.Loading)
+            val response = repo.searchMovieByGenre(idGenre, genrePage)
+            mutableMovieGenre.postValue(handleSearchMovieGenre(response))
+        }
+    }
+
+    private fun handleSearchMovieGenre(response: Response<MovieResponse>): RequestState<MovieResponse?> {
+        return if (response.isSuccessful) {
+            response.body()?.let {
+                genrePage++
+                if (modelMovieGenre == null) modelMovieGenre = it else {
+                    val oldMovies = modelMovieGenre?.results
+                    val newMovies = it.results
+                    oldMovies?.addAll(newMovies)
+                }
+            }
+            RequestState.Success(modelMovieGenre ?: response.body())
         } else RequestState.Error(
             try {
                 response.errorBody()?.string()?.let {

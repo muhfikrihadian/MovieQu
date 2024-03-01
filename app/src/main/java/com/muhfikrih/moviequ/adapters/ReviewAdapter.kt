@@ -11,7 +11,6 @@ import com.muhfikrih.moviequ.models.review.ResultsItem
 
 class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     private lateinit var onClickListener: OnClickListener
-    private val videoList = ArrayList<ResultsItem>()
 
     fun onClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener;

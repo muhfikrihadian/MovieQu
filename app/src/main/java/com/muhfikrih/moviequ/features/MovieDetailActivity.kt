@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.muhfikrih.moviequ.BuildConfig
+import com.muhfikrih.moviequ.R
 import com.muhfikrih.moviequ.adapters.ReviewAdapter
 import com.muhfikrih.moviequ.adapters.VideoListAdapter
 import com.muhfikrih.moviequ.api.RequestState
 import com.muhfikrih.moviequ.databinding.ActivityMovieDetailBinding
+import com.muhfikrih.moviequ.helpers.InternetChecker
 import com.muhfikrih.moviequ.models.movie.DataMovie
 import com.muhfikrih.moviequ.viewmodels.MovieViewModel
 
@@ -65,8 +67,18 @@ class MovieDetailActivity : AppCompatActivity() {
             }
         }
         idMovie = movie.id ?: 0
-        getVideos()
-        getReview()
+        val networkUtils = InternetChecker(this@MovieDetailActivity)
+        if (networkUtils.isNetworkAvailable()) {
+            getVideos()
+            getReview()
+        } else {
+            Toast.makeText(
+                this@MovieDetailActivity,
+                resources.getString(R.string.ErrServer),
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        }
     }
 
     private fun getVideos() {
@@ -85,6 +97,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
                     is RequestState.Error -> {
                         binding.progressVideo.hide()
+                        binding.tvInfoVideo.text = resources.getString(R.string.ErrServer)
                         binding.tvInfoVideo.visibility = View.VISIBLE
                     }
                 }
@@ -117,6 +130,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
                     is RequestState.Error -> {
                         binding.progressReview.hide()
+                        binding.tvInfoReview.text = resources.getString(R.string.ErrServer)
                         binding.tvInfoReview.visibility = View.VISIBLE
                     }
                 }
